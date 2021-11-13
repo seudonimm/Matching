@@ -7,9 +7,18 @@ public class PlayerGridManager : MonoBehaviour
 {
     public bool[,] playerGrid;
 
+    public int gridHealth;
+
     [SerializeField] List<Transform> playerGridPositions;
     [SerializeField] List<Image> gridSprites;
 
+    public List<int> laserPower;
+
+    [SerializeField] int r0, r1, r2, c0, c1, c2;
+
+    [SerializeField] GameStateManager gSM;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -26,9 +35,20 @@ public class PlayerGridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(gSM.gameState != GameState.ArrangingGrid)
+        {
+            
+        }
     }
 
+    public void GridTakeDamage(int num)
+    {
+        gridHealth -= num;
+        if(gridHealth <= 0)
+        {
+
+        }
+    }
     void GridPositionUpdater()
     {
         for(int i = 0; i < 3; i++)
@@ -46,86 +66,80 @@ public class PlayerGridManager : MonoBehaviour
             }
         }
 
-        //if (playerGrid[0, 0])
-        //{
-        //    gridSprites[0].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[0].color = Color.white;
-        //}
+        LaserActivation();
+    }
 
-        //if (playerGrid[0, 1])
-        //{
-        //    gridSprites[1].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[1].color = Color.white;
-        //}
+    void LaserActivation()
+    {
+        c0 = 0;
+        c1 = 0;
+        c2 = 0;
+        r0 = 0;
+        r1 = 0;
+        r2 = 0;
+        for(int i = 0; i < laserPower.Count; i++)
+        {
+            laserPower[i] = 0;
+        }
 
-        //if (playerGrid[0, 2])
-        //{
-        //    gridSprites[2].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[2].color = Color.white;
-        //}
+        if(playerGrid[0, 0])
+        {
+            c0++;
+            r0++;
+        }
+        if(playerGrid[0, 1])
+        {
+            r0++;
+            c1++;
+        }
+        if(playerGrid[0, 2])
+        {
+            r0++;
+            c2++;
+        }
+        if (playerGrid[1, 0])
+        {
+            r1++;
+            c0++;
+        }
+        if (playerGrid[1, 1])
+        {
+            r1++;
+            c1++;
+        }
+        if (playerGrid[1, 2])
+        {
+            r1++;
+            c2++;
+        }
+        if (playerGrid[2, 0])
+        {
+            r2++;
+            c0++;
+        }
+        if (playerGrid[2, 1])
+        {
+            r2++;
+            c1++;
+        }
+        if (playerGrid[2, 2])
+        {
+            r2++;
+            c2++;
+        }
 
-        //if (playerGrid[1, 0])
-        //{
-        //    gridSprites[3].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[3].color = Color.white;
-        //}
-
-        //if (playerGrid[1, 1])
-        //{
-        //    gridSprites[4].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[4].color = Color.white;
-        //}
-
-        //if (playerGrid[1, 2])
-        //{
-        //    gridSprites[5].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[5].color = Color.white;
-        //}
-
-        //if (playerGrid[2, 0])
-        //{
-        //    gridSprites[6].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[6].color = Color.white;
-        //}
-
-        //if (playerGrid[2, 1])
-        //{
-        //    gridSprites[7].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[7].color = Color.white;
-        //}
-
-        //if (playerGrid[2, 2])
-        //{
-        //    gridSprites[8].color = Color.red;
-        //}
-        //else
-        //{
-        //    gridSprites[8].color = Color.white;
-        //}
+        laserPower[0] = c0;
+        laserPower[1] = c1;
+        laserPower[2] = c2;
+        laserPower[3] = r0;
+        laserPower[4] = r1;
+        laserPower[5] = r2;
+        laserPower[6] = c2;
+        laserPower[7] = c1;
+        laserPower[8] = c0;
+        laserPower[9] = r2;
+        laserPower[10] = r1;
+        laserPower[11] = r0;
 
     }
 
@@ -195,10 +209,10 @@ public class PlayerGridManager : MonoBehaviour
     //move up
     public void RightMoveUp()
     {
-        bool temp = playerGrid[0, 0];
-        playerGrid[0, 0] = playerGrid[1, 0];
-        playerGrid[1, 0] = playerGrid[2, 0];
-        playerGrid[2, 0] = temp;
+        bool temp = playerGrid[0, 2];
+        playerGrid[0, 2] = playerGrid[1, 2];
+        playerGrid[1, 2] = playerGrid[2, 2];
+        playerGrid[2, 2] = temp;
 
         GridPositionUpdater();
 
@@ -215,12 +229,13 @@ public class PlayerGridManager : MonoBehaviour
     }
     public void LeftMoveUp()
     {
-        bool temp = playerGrid[0, 2];
-        playerGrid[0, 2] = playerGrid[1, 2];
-        playerGrid[1, 2] = playerGrid[2, 2];
-        playerGrid[2, 2] = temp;
+        bool temp = playerGrid[0, 0];
+        playerGrid[0, 0] = playerGrid[1, 0];
+        playerGrid[1, 0] = playerGrid[2, 0];
+        playerGrid[2, 0] = temp;
 
         GridPositionUpdater();
+
 
     }
 
