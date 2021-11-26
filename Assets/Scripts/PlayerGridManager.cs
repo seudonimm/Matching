@@ -7,7 +7,7 @@ public class PlayerGridManager : MonoBehaviour
 {
     public bool[,] playerGrid;
 
-    public int gridHealth;
+    public int gridHealth = 10;
 
     [SerializeField] List<Transform> playerGridPositions;
     [SerializeField] List<Image> gridSprites;

@@ -7,7 +7,7 @@ public class Enemy1
     private int health;
     private int distanceFromGrid;
 
-    bool dead;
+    bool dead, attacked;
 
     public int Health { get => health; set => health = value; }
     public int DistanceFromGrid { get => distanceFromGrid; set => distanceFromGrid = value; }
@@ -34,7 +34,7 @@ public class Enemy1
 
         if(distanceFromGrid <= 0)
         {
-            dead = true;
+            attacked = true;
         }
     }
 }
