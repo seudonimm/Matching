@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -15,16 +16,24 @@ public class GameStateManager : MonoBehaviour
 
     [SerializeField] float arrangingTime, arrangingTimeDefault;
 
+    [SerializeField] TextMeshProUGUI turnTimerText;
+
+    [SerializeField] TextMeshProUGUI currentTurnText;
+
     // Start is called before the first frame update
     void Start()
     {
         arrangingTime = arrangingTimeDefault;
+        currentTurnText.text = turns.ToString();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameStateMachine(); 
+        GameStateMachine();
+
+        turnTimerText.text = arrangingTime.ToString();
     }
 
     void GameStateMachine()
@@ -88,6 +97,7 @@ public class GameStateManager : MonoBehaviour
                     }
                 }
                 turns++;
+                currentTurnText.text = turns.ToString();
 
                 if (pGM.gridHealth <= 0)
                 {

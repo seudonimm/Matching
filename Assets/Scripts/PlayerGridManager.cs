@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class PlayerGridManager : MonoBehaviour
 {
@@ -18,7 +20,13 @@ public class PlayerGridManager : MonoBehaviour
 
     [SerializeField] GameStateManager gSM;
 
-    
+    [SerializeField] List<GameObject> lasers;
+
+    [SerializeField] TextMeshProUGUI gridHealthText;
+
+    [SerializeField] List<TextMeshProUGUI> buttonTexts;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,10 +43,87 @@ public class PlayerGridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        gridHealthText.text = gridHealth.ToString();
+
         if(gSM.gameState != GameState.ArrangingGrid)
         {
             
         }
+
+        if (playerGrid[0, 0])
+        {
+            lasers[0].SetActive(true);
+        }
+        if (playerGrid[0, 1])
+        {
+            lasers[1].SetActive(true);
+        }
+        if (playerGrid[0, 2])
+        {
+            lasers[2].SetActive(true);
+        }
+        if (playerGrid[1, 0])
+        {
+            lasers[3].SetActive(true);
+        }
+        if (playerGrid[1, 1])
+        {
+            lasers[4].SetActive(true);
+        }
+        if (playerGrid[1, 2])
+        {
+            lasers[5].SetActive(true);
+        }
+        if (playerGrid[2, 0])
+        {
+            lasers[6].SetActive(true);
+        }
+        if (playerGrid[2, 1])
+        {
+            lasers[7].SetActive(true);
+        }
+        if (playerGrid[2, 2])
+        {
+            lasers[8].SetActive(true);
+        }
+        //---------------------------
+        if (!playerGrid[0, 0])
+        {
+            lasers[0].SetActive(false);
+        }
+        if (!playerGrid[0, 1])
+        {
+            lasers[1].SetActive(false);
+        }
+        if (!playerGrid[0, 2])
+        {
+            lasers[2].SetActive(false);
+        }
+        if (!playerGrid[1, 0])
+        {
+            lasers[3].SetActive(false);
+        }
+        if (!playerGrid[1, 1])
+        {
+            lasers[4].SetActive(false);
+        }
+        if (!playerGrid[1, 2])
+        {
+            lasers[5].SetActive(false);
+        }
+        if (!playerGrid[2, 0])
+        {
+            lasers[6].SetActive(false);
+        }
+        if (!playerGrid[2, 1])
+        {
+            lasers[7].SetActive(false);
+        }
+        if (!playerGrid[2, 2])
+        {
+            lasers[8].SetActive(false);
+        }
+
     }
 
     public void GridTakeDamage(int num)
@@ -86,46 +171,77 @@ public class PlayerGridManager : MonoBehaviour
         {
             c0++;
             r0++;
+
+            buttonTexts[2].text = r0.ToString();
+            buttonTexts[3].text = c0.ToString();
         }
         if(playerGrid[0, 1])
         {
             r0++;
             c1++;
+
+            buttonTexts[4].text = c1.ToString();
         }
         if(playerGrid[0, 2])
         {
             r0++;
             c2++;
+
+            buttonTexts[5].text = c2.ToString();
+            buttonTexts[6].text = r0.ToString();
+
         }
         if (playerGrid[1, 0])
         {
             r1++;
             c0++;
+
+            buttonTexts[1].text = r1.ToString();
         }
         if (playerGrid[1, 1])
         {
             r1++;
             c1++;
+
+            buttonTexts[1].text = r1.ToString();
+            buttonTexts[4].text = c1.ToString();
+            buttonTexts[7].text = r1.ToString();
+            buttonTexts[10].text = c1.ToString();
+
         }
         if (playerGrid[1, 2])
         {
             r1++;
             c2++;
+
+            buttonTexts[7].text = r1.ToString();
+
         }
         if (playerGrid[2, 0])
         {
             r2++;
             c0++;
+
+            buttonTexts[0].text = r2.ToString();
+            buttonTexts[11].text = c0.ToString();
+
         }
         if (playerGrid[2, 1])
         {
             r2++;
             c1++;
+
+            buttonTexts[10].text = c1.ToString();
+
         }
         if (playerGrid[2, 2])
         {
             r2++;
             c2++;
+
+            buttonTexts[8].text = r2.ToString();
+            buttonTexts[9].text = c2.ToString();
+
         }
 
         laserPower[0] = c0;
