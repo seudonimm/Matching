@@ -13,8 +13,13 @@ public class EnemyManager : MonoBehaviour
     //the enemy objects in their respective lanes
     public List<Enemy1> enemiesInLane;
 
+    //displays enemy health and distance
     [SerializeField] List<TextMeshProUGUI> enemyHealth;
     [SerializeField] List<TextMeshProUGUI> enemyDistance;
+
+    //ui images for health and distance
+    [SerializeField] List<Image> hearts;
+    [SerializeField] List<Image> distanceArrows;
 
     [SerializeField] GameStateManager gSM;
 
@@ -42,6 +47,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    //set enemy images active for lanes with enemies
     void PlaceEnemyOnScreen()
     {
         for(int i = 0; i < 12; i++)
@@ -58,6 +64,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    //displays values for enemies on screen
     void DisplayEnemyValues()
     {
         for (int i = 0; i < 12; i++)
@@ -66,6 +73,8 @@ public class EnemyManager : MonoBehaviour
             {
                 enemyHealth[i].text = enemiesInLane[i].Health.ToString();
                 enemyDistance[i].text = enemiesInLane[i].DistanceFromGrid.ToString();
+                hearts[i].gameObject.SetActive(true);
+                distanceArrows[i].gameObject.SetActive(true);
                 //enemyOnGrid[i].SetActive(true);
             }
 
@@ -73,6 +82,8 @@ public class EnemyManager : MonoBehaviour
             {
                 enemyHealth[i].text = "";
                 enemyDistance[i].text = "";
+                hearts[i].gameObject.SetActive(false);
+                distanceArrows[i].gameObject.SetActive(false);
 
                 //enemyOnGrid[i].SetActive(false);
             }

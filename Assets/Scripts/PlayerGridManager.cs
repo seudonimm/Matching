@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using Shapes;
 
 public class PlayerGridManager : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class PlayerGridManager : MonoBehaviour
 
     [SerializeField] List<GameObject> lasers;
 
-    [SerializeField] TextMeshProUGUI gridHealthText;
+    public TextMeshProUGUI gridHealthText;
 
     [SerializeField] List<TextMeshProUGUI> buttonTexts;
 
@@ -30,7 +30,7 @@ public class PlayerGridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //initialize grid and adds the four blocks
         playerGrid = new bool[3, 3];
         playerGrid[0, 0] = true;
         playerGrid[0, 2] = true;
@@ -43,11 +43,11 @@ public class PlayerGridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gridHealthText.text = gridHealth.ToString();
+        gridHealthText.text = "Health:\n" + gridHealth.ToString();
 
-        if(gSM.gameState != GameState.ArrangingGrid)
+        if(gSM.gameState == GameState.Reset)
         {
-            
+            gridHealth = 10;
         }
 
         if (playerGrid[0, 0])
@@ -126,14 +126,7 @@ public class PlayerGridManager : MonoBehaviour
 
     }
 
-    public void GridTakeDamage(int num)
-    {
-        gridHealth -= num;
-        if(gridHealth <= 0)
-        {
-
-        }
-    }
+    //displays which grid positions have the active blocks
     void GridPositionUpdater()
     {
         for(int i = 0; i < 3; i++)
@@ -156,57 +149,52 @@ public class PlayerGridManager : MonoBehaviour
 
     void LaserActivation()
     {
+        //reset count for row and column active blocks
         c0 = 0;
         c1 = 0;
         c2 = 0;
         r0 = 0;
         r1 = 0;
         r2 = 0;
+
+        //reset button text display for active block count
+        for(int i = 0; i < buttonTexts.Count; i++)
+        {
+            buttonTexts[i].text = "";
+        }
+        //reset laser power
         for(int i = 0; i < laserPower.Count; i++)
         {
             laserPower[i] = 0;
         }
 
+
+        //count active blocks in each row and column
         if(playerGrid[0, 0])
         {
             c0++;
             r0++;
-
-            buttonTexts[2].text = r0.ToString();
-            buttonTexts[3].text = c0.ToString();
         }
         if(playerGrid[0, 1])
         {
             r0++;
             c1++;
-
-            buttonTexts[4].text = c1.ToString();
         }
         if(playerGrid[0, 2])
         {
             r0++;
             c2++;
 
-            buttonTexts[5].text = c2.ToString();
-            buttonTexts[6].text = r0.ToString();
-
         }
         if (playerGrid[1, 0])
         {
             r1++;
             c0++;
-
-            buttonTexts[1].text = r1.ToString();
         }
         if (playerGrid[1, 1])
         {
             r1++;
             c1++;
-
-            buttonTexts[1].text = r1.ToString();
-            buttonTexts[4].text = c1.ToString();
-            buttonTexts[7].text = r1.ToString();
-            buttonTexts[10].text = c1.ToString();
 
         }
         if (playerGrid[1, 2])
@@ -214,7 +202,6 @@ public class PlayerGridManager : MonoBehaviour
             r1++;
             c2++;
 
-            buttonTexts[7].text = r1.ToString();
 
         }
         if (playerGrid[2, 0])
@@ -222,8 +209,6 @@ public class PlayerGridManager : MonoBehaviour
             r2++;
             c0++;
 
-            buttonTexts[0].text = r2.ToString();
-            buttonTexts[11].text = c0.ToString();
 
         }
         if (playerGrid[2, 1])
@@ -231,19 +216,69 @@ public class PlayerGridManager : MonoBehaviour
             r2++;
             c1++;
 
-            buttonTexts[10].text = c1.ToString();
-
         }
         if (playerGrid[2, 2])
         {
             r2++;
             c2++;
 
-            buttonTexts[8].text = r2.ToString();
-            buttonTexts[9].text = c2.ToString();
+        }
+        //---------------------------------------------
+        //assigns number count from above statement to corresponding button text
+        if (playerGrid[0, 0])
+        {
+
+            buttonTexts[11].text = r0.ToString();
+            buttonTexts[0].text = c0.ToString();
+        }
+        if (playerGrid[0, 1])
+        {
+            buttonTexts[1].text = c1.ToString();
+        }
+        if (playerGrid[0, 2])
+        {
+            buttonTexts[2].text = c2.ToString();
+            buttonTexts[3].text = r0.ToString();
+
+        }
+        if (playerGrid[1, 0])
+        {
+            buttonTexts[10].text = r1.ToString();
+        }
+        if (playerGrid[1, 1])
+        {
+
+            buttonTexts[10].text = r1.ToString();
+            buttonTexts[1].text = c1.ToString();
+            buttonTexts[4].text = r1.ToString();
+            buttonTexts[7].text = c1.ToString();
+
+        }
+        if (playerGrid[1, 2])
+        {
+
+            buttonTexts[4].text = r1.ToString();
+
+        }
+        if (playerGrid[2, 0])
+        {
+            buttonTexts[9].text = r2.ToString();
+            buttonTexts[8].text = c0.ToString();
+
+        }
+        if (playerGrid[2, 1])
+        {
+            buttonTexts[7].text = c1.ToString();
+
+        }
+        if (playerGrid[2, 2])
+        {
+            buttonTexts[5].text = r2.ToString();
+            buttonTexts[6].text = c2.ToString();
 
         }
 
+        //assign laser power based on 
         laserPower[0] = c0;
         laserPower[1] = c1;
         laserPower[2] = c2;
@@ -257,8 +292,18 @@ public class PlayerGridManager : MonoBehaviour
         laserPower[10] = r1;
         laserPower[11] = r0;
 
+        //if button text is unassigned, the corresponding laser's power will be zero
+        for(int i = 0; i < buttonTexts.Count; i++)
+        {
+            if(buttonTexts[i].text == "")
+            {
+                laserPower[i] = 0;
+            }
+        }
+
     }
 
+    //functions for use with buttons in game
     //move right
     public void TopMoveRight()
     {
@@ -387,4 +432,5 @@ public class PlayerGridManager : MonoBehaviour
         GridPositionUpdater();
 
     }
+
 }

@@ -25,6 +25,7 @@ public class Enemy1
         if(health <= 0)
         {
             dead = true;
+            Values.CurrentScore += 10;
         }
     }
 
