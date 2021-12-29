@@ -46,6 +46,7 @@ public class GameStateManager : MonoBehaviour
         highScoreText.text = Values.HiScore.ToString();
 
         GameStateMachine();
+        GetInstructions();
 
         turnTimerText.text = "Time:\n" + arrangingTime.ToString();
 
@@ -242,7 +243,9 @@ public class GameStateManager : MonoBehaviour
                 {
                     gameOverPanel.SetActive(false);
                     Values.CurrentScore = 0;
-                    
+                    currentScoreText.text = Values.CurrentScore.ToString();
+                    turns = 0;
+                    currentTurnText.text = turns.ToString();
                     gameState = GameState.EnemySpawn;
 
                     arrangingTime = arrangingTimeDefault;
@@ -252,6 +255,39 @@ public class GameStateManager : MonoBehaviour
                 break;
         }
     }
+
+    void GetInstructions()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (!instructionsPanel.activeInHierarchy)
+            {
+                instructionsPanel.SetActive(true);
+                Time.timeScale = 0;
+            }
+        }
+        if (instructionsPanel.activeInHierarchy && Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            instructionsPanel.SetActive(false);
+            Time.timeScale = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
+    //for use with the End Turn button in game
+    public void EndTurn()
+    {
+        if(gameState == GameState.ArrangingGrid)
+        {
+            gameState = GameState.LaserAttack;
+        }
+    }
+
+    
 
 }
 
