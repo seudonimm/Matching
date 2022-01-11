@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
 {
     //keeps track of what lanes have an enemy
     public List<bool> enemyLanes;
-    [SerializeField] List<GameObject> enemyOnGrid;
+    public List<GameObject> enemyOnGrid;
 
     //the enemy objects in their respective lanes
     public List<Enemy1> enemiesInLane;

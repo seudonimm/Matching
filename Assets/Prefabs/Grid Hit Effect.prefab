@@ -151,5 +151,5 @@ MonoBehaviour:
   disc: {fileID: 0}
   rect: {fileID: 4712347008019173492}
   maxRadius: 0
-  rate: 60
+  rate: 40
   t: 0

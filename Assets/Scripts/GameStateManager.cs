@@ -23,7 +23,8 @@ public class GameStateManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI currentScoreText, highScoreText; //
 
-    [SerializeField] Rectangle gridHitEffect; 
+    [SerializeField] Rectangle gridHitEffect;
+    [SerializeField] GameObject enemyDeathEffect, enemyAttackEffect;
 
     [SerializeField] List<GameObject> lasers; 
 
@@ -38,6 +39,7 @@ public class GameStateManager : MonoBehaviour
         currentTurnText.text = "Turn:\n" + turns.ToString();
 
         Values.CurrentScore = 0;
+        Time.timeScale = 0;
     }
 
     // Update is called once per frame
@@ -157,6 +159,7 @@ public class GameStateManager : MonoBehaviour
                             //remove enemy from array when health is zero
                             if (eM.enemiesInLane[i].Health <= 0)
                             {
+                                Instantiate(enemyDeathEffect, eM.enemyOnGrid[i].transform.position, eM.enemyOnGrid[i].transform.rotation);
                                 eM.enemiesInLane[i] = null;
                                 eM.enemyLanes[i] = false;
                             }
@@ -187,6 +190,8 @@ public class GameStateManager : MonoBehaviour
                             pGM.gridHealth -= eM.enemiesInLane[i].Health;
                             //creates effect for grid losing health
                             Instantiate(gridHitEffect, transform.position, transform.rotation);
+
+                            Instantiate(enemyAttackEffect, eM.enemyOnGrid[i].transform.position, enemyAttackEffect.transform.rotation);
 
                             //remove enemy from array when it reaches grid
                             eM.enemiesInLane[i] = null;
@@ -251,6 +256,17 @@ public class GameStateManager : MonoBehaviour
                     arrangingTime = arrangingTimeDefault;
 
                     pGM.gridHealthText.color = Color.white;
+
+                    for (int i = 0; i < 12; i++)
+                    {
+                        if (eM.enemyLanes[i])
+                        {
+                            eM.enemiesInLane[i] = null;
+                            eM.enemyLanes[i] = false;
+
+                        }
+                    }
+
                 }
                 break;
         }
@@ -266,7 +282,7 @@ public class GameStateManager : MonoBehaviour
                 Time.timeScale = 0;
             }
         }
-        if (instructionsPanel.activeInHierarchy && Input.GetKeyDown(KeyCode.Mouse0))
+        if ((instructionsPanel.activeInHierarchy && Input.GetKeyDown(KeyCode.Mouse0)) || Input.GetKeyDown(KeyCode.Mouse0))
         {
             instructionsPanel.SetActive(false);
             Time.timeScale = 1;
